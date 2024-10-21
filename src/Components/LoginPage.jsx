@@ -1,7 +1,7 @@
 import React from 'react';
-import '../style/LoginForm.css';
+import '../style/LoginPage.css';
 
-const LoginForm = () => {
+const LoginPage = () => {
   const spans = Array.from({ length: 10000 }, (_, index) => index);
   return (
     <section> 
@@ -19,13 +19,7 @@ const LoginForm = () => {
 
       <div class="inputBox"> 
 
-       <input type="text" required /> <i>Username</i> 
-
-      </div> 
-
-      <div class="inputBox"> 
-
-       <input type="password" required /> <i>Password</i> 
+       <input type="text" required /> <i>Roll Number</i> 
 
       </div> 
 
@@ -49,4 +43,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default LoginPage;
