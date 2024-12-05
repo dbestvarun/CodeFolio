@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
-import '../style/LoginPage.css';
+import '../../style/LoginPage.css';
 
 const LoginPage = ({ handleLogin }) => {
   const [rollNumber, setRollNumber] = useState('');
@@ -8,7 +8,7 @@ const LoginPage = ({ handleLogin }) => {
   const [loading, setLoading] = useState(false); // Loading state
   const spans = Array.from({ length: 10000 }, (_, index) => index);
 
-  const emailDomain = '@jcboseust.ac.in'; // Replace with your college's email domain
+  const emailDomain = '@jcboseust.ac.in'; // hardcore the email address
 
   const handleSubmit = async (e) => {
     e.preventDefault();

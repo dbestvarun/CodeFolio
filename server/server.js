@@ -67,5 +67,7 @@ app.get('/api/verify', (req, res) => {
   }
 });
 
+//the following code will contain details abaout port and app about the get, fetch, refresh 
+
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
