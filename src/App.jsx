@@ -24,14 +24,14 @@ const App = () => {
   };
 
   const handleLogin = (email) => {
-    setIsLoggedIn(true); // Set login state to true
-    setUserEmail(email); // Store the user's email
-    console.log('User logged in:', email); // Log or handle the email as needed
+    setIsLoggedIn(true); 
+    setUserEmail(email); 
+    console.log('User logged in:', email);
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false); // Simulate logout
-    setUserEmail(null); // Clear user email
+    setIsLoggedIn(false); 
+    setUserEmail(null); 
   };
 
   return (

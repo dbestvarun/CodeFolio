@@ -1,6 +1,11 @@
 import { useState } from 'react';
 import axios from 'axios';
 import '../../style/LoginPage.css';
+import Cookies from 'js-cookie';
+
+// Set a cookie
+
+// Optionally, you can use additional options like 'secure', 'sameSite', etc.
 
 const LoginPage = ({ handleLogin }) => {
   const [rollNumber, setRollNumber] = useState('');
@@ -16,7 +21,10 @@ const LoginPage = ({ handleLogin }) => {
     setLoading(true); // Start loading
 
     try {
-      await axios.post('http://localhost:5000/api/send-magic-link', { email });
+      const data = await axios.post('http://localhost:5000/api/send-magic-link', { email, rollNumber });
+      const data1 = (data.data.token)
+      Cookies.set('user', data1, { expires: 7, path: '/' });
+
       alert('Check your email for the magic link.');
       // handleLogin(email);
       setError(null);
