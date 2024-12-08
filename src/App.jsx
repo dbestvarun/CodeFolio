@@ -67,8 +67,8 @@ const App = () => {
             <LoginPage handleLogin={handleLogin} />
           )} />
           {/* Route for the Verify Page */}
-          <Route path="/verify" element={<VerifyPage handleLogin={handleLogin} />} />
-          <Route path="/profile" element={<NewPlatformPage />} />
+          <Route path="/verify" element={!isLoggedIn?(<VerifyPage handleLogin={handleLogin} />):(<LoginPage handleLogin={handleLogin} />)} />
+          <Route path="/profile" element={!isLoggedIn?(<NewPlatformPage />):(<LoginPage handleLogin={handleLogin} />)} />
         </Routes>
       </div>
     </Router>
