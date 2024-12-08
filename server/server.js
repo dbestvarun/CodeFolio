@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import User from "./models/user.js";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
-import  connectMongoDB  from "./helpers/connection.js";
+import connectMongoDB from "./helpers/connection.js";
 
 dotenv.config();
 const app = express();
@@ -123,9 +123,13 @@ app.get("/api/verify", (req, res) => {
   }
 });
 
-app.post("api/profile", async (req, res) => {
+app.post("/api/profile", async (req, res) => {
+  console.log(req.body);
   const { email, codeforces, leetcode, codechef } = req.body;
-
+  console.log(email);
+  console.log(codechef);
+  console.log(codeforces);
+  console.log(leetcode);
   if (!email) {
     return res.status(400).json({ message: "Email is required" });
   }
@@ -152,6 +156,40 @@ app.post("api/profile", async (req, res) => {
         codeforces: user.codeforces,
         leetcode: user.leetcode,
         updatedAt: user.updatedAt,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+app.post("/api/profile/delete", async (req, res) => {
+  console.log(req.body);
+  const { email, platform } = req.body;
+  console.log(email);
+
+  if (!email) {
+    return res.status(400).json({ message: "Email is required" });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (platform === "codeforces") user.codeforces = "";
+    if (platform === "codechef") user.codechef = "";
+    if (platform === "leetcode") user.leetcode = "";
+    user.updatedAt = Date.now();
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: {
+        id: user._id,
+        email: user.email,
       },
     });
   } catch (err) {
