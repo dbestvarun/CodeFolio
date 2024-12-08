@@ -1,43 +1,70 @@
-"use client"
-
-import React, { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { ArrowUpDown } from 'lucide-react'
-
-const leaderboardData = [
-  { rank: 1, name: "John Doe", score: 9850, activeDays: 120, questionsSolved: 450, avatar: "/placeholder.svg?height=32&width=32" },
-  { rank: 2, name: "Jane Smith", score: 9720, activeDays: 115, questionsSolved: 430, avatar: "/placeholder.svg?height=32&width=32" },
-  { rank: 3, name: "Bob Johnson", score: 9680, activeDays: 118, questionsSolved: 440, avatar: "/placeholder.svg?height=32&width=32" },
-  { rank: 4, name: "Alice Williams", score: 9550, activeDays: 110, questionsSolved: 420, avatar: "/placeholder.svg?height=32&width=32" },
-  { rank: 5, name: "Charlie Brown", score: 9420, activeDays: 105, questionsSolved: 400, avatar: "/placeholder.svg?height=32&width=32" },
-  { rank: 6, name: "Diana Davis", score: 9380, activeDays: 108, questionsSolved: 410, avatar: "/placeholder.svg?height=32&width=32" },
-  { rank: 7, name: "Ethan Edwards", score: 9310, activeDays: 100, questionsSolved: 390, avatar: "/placeholder.svg?height=32&width=32" },
-  { rank: 8, name: "Fiona Foster", score: 9280, activeDays: 102, questionsSolved: 395, avatar: "/placeholder.svg?height=32&width=32" },
-  { rank: 9, name: "George Green", score: 9150, activeDays: 98, questionsSolved: 380, avatar: "/placeholder.svg?height=32&width=32" },
-  { rank: 10, name: "Hannah Hill", score: 9020, activeDays: 95, questionsSolved: 370, avatar: "/placeholder.svg?height=32&width=32" },
-]
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { ArrowUpDown } from 'lucide-react';
+import { jwtDecode } from 'jwt-decode';
+import Cookies from 'js-cookie';
+import axios from 'axios';
 
 export default function Leaderboard() {
   const [sortConfig, setSortConfig] = useState({ key: 'rank', direction: 'asc' });
+  const [leaderboardData, setLeaderboardData] = useState([]);
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const token = Cookies.get("user");
+        if (!token) {
+          alert("User is not authenticated.");
+          return;
+        }
+
+        const user = jwtDecode(token);
+        const response = await axios.get("http://localhost:5000/users/questions");
+        console.log(response);
+        setLeaderboardData(response.data.users);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const sortedData = React.useMemo(() => {
     let sortableItems = [...leaderboardData];
-    if (sortConfig !== null) {
-      sortableItems.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === 'asc' ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === 'asc' ? 1 : -1;
-        }
-        return 0;
-      });
-    }
+
+    // Add calculatedScore to each user, with defaults for missing values
+    sortableItems = sortableItems.map(user => {
+      const cf_rating = user.cf_rating || 0; // Default to 0 if cf_rating is missing
+      const total_questions = user.total_questions || 0; // Default to 0 if total_questions is missing
+      const calculatedScore = (cf_rating * 2.5) + (total_questions * 3.5);
+
+      console.log(`User: ${user.email}, cf_rating: ${cf_rating}, total_questions: ${total_questions}, calculatedScore: ${calculatedScore}`);
+
+      return {
+        ...user,
+        cf_rating,
+        total_questions,
+        calculatedScore
+      };
+    });
+
+    // Sort by calculatedScore in descending order
+    sortableItems.sort((a, b) => b.calculatedScore - a.calculatedScore);
+
+    // Assign ranks based on sorted order
+    sortableItems = sortableItems.map((user, index) => ({
+      ...user,
+      rank: index + 1 // Rank starts from 1
+    }));
+
     return sortableItems;
-  }, [sortConfig]);
+  }, [leaderboardData]);
+
+
 
   const requestSort = (key) => {
     let direction = 'asc';
@@ -47,10 +74,11 @@ export default function Leaderboard() {
     setSortConfig({ key, direction });
   };
 
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Global Leaderboard</CardTitle>
+        <CardTitle>University Leaderboard</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="overflow-x-auto">
@@ -65,19 +93,19 @@ export default function Leaderboard() {
                 </th>
                 <th className="px-4 py-2 text-left">User</th>
                 <th className="px-4 py-2 text-left">
-                  <Button variant="ghost" onClick={() => requestSort('score')}>
+                  <Button variant="ghost" onClick={() => requestSort('calculatedScore')}>
                     Score
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </th>
                 <th className="px-4 py-2 text-left">
-                  <Button variant="ghost" onClick={() => requestSort('activeDays')}>
-                    Active Days
+                  <Button variant="ghost" onClick={() => requestSort('cf_rating')}>
+                    Cf Rating
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
                 </th>
                 <th className="px-4 py-2 text-left">
-                  <Button variant="ghost" onClick={() => requestSort('questionsSolved')}>
+                  <Button variant="ghost" onClick={() => requestSort('total_questions')}>
                     Questions Solved
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                   </Button>
@@ -98,17 +126,21 @@ export default function Leaderboard() {
                   <td className="px-4 py-2">
                     <div className="flex items-center space-x-2">
                       <Avatar>
-                        <AvatarImage src={user.avatar} alt={user.name} />
-                        <AvatarFallback>{user.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                        <AvatarImage src={user.avatar} alt={user.email || 'User Avatar'} />
+                        <AvatarFallback>
+                          {user.email
+                            ? user.email.split('@')[0].slice(-2)
+                            : '??'}
+                        </AvatarFallback>
                       </Avatar>
-                      <span className="font-medium">{user.name}</span>
+                      <span className="font-medium">{user.email || 'Unknown'}</span>
                     </div>
                   </td>
                   <td className="px-4 py-2">
-                    <Badge variant="secondary">{user.score}</Badge>
+                    <Badge variant="secondary">{user.calculatedScore}</Badge>
                   </td>
-                  <td className="px-4 py-2">{user.activeDays}</td>
-                  <td className="px-4 py-2">{user.questionsSolved}</td>
+                  <td className="px-4 py-2">{user.cf_rating}</td>
+                  <td className="px-4 py-2">{user.total_questions}</td>
                 </tr>
               ))}
             </tbody>
@@ -116,6 +148,5 @@ export default function Leaderboard() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
-

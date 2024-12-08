@@ -266,6 +266,66 @@ app.post("/api/profile/info", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+app.get("/users/cf-desc", async (req, res) => {
+  try {
+    const users = await User.find({}).sort({ cf_rating: -1 });
+
+    res.status(200).json({
+      message:
+        "Users sorted by total active days (descending) fetched successfully",
+      users,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get("/users/questions-desc", async (req, res) => {
+  try {
+    const users = await User.find({}).sort({ total_questions: -1 });
+
+    res.status(200).json({
+      message:
+        "Users sorted by total questions (descending) fetched successfully",
+      users,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get("/users/cf", async (req, res) => {
+  try {
+    const users = await User.find({})
+      .sort({ cf_rating: 1 })
+
+    res.status(200).json({
+      message: "Users sorted by total active days fetched successfully",
+      users,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+app.get("/users/questions", async (req, res) => {
+  try {
+    const users = await User.find({})
+      .sort({ total_questions: 1 })
+
+    res.status(200).json({
+      message: "Users sorted by total questions fetched successfully",
+      users,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
