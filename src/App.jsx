@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Change Switch to Routes
 import LoginPage from './Components/LogIn/LoginPage.jsx';
 import Header from "./Components/Header/Header.jsx";
@@ -15,6 +15,7 @@ import NewPlatformPage from './Components/Profile/NewPlatformPage.jsx'
 import { TopicAnalysis } from './Components/Statistics/TopicStats.jsx';
 import UniversityRank from './Components/Statistics/UniversityRank.jsx';
 import Cookies from 'js-cookie';
+import Leaderboard from './Components/Leaderboard/Leaderboard.jsx';
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -94,7 +95,17 @@ const App = () => {
           )} />
           {/* Route for the Verify Page */}
           <Route path="/verify" element={isLoggedIn ? (<VerifyPage handleLogin={handleLogin} />) : (<LoginPage handleLogin={handleLogin} />)} />
-          <Route path="/profile" element={isLoggedIn ? (<NewPlatformPage />) : (<LoginPage handleLogin={handleLogin} />)} />
+          
+          <Route path="/leaderboard" element={isLoggedIn ? (<>
+            <Header toggleDarkMode={toggleDarkMode} darkMode={darkMode} toggleSidebar={toggleSidebar} handleLogout={handleLogout} />
+            <Sidebar isSidebarOpen={isSidebarOpen} />
+            <Main isSidebarOpen={isSidebarOpen}>
+              <Content><Leaderboard /></Content> </Main></>) : (<LoginPage handleLogin={handleLogin} />)} />
+          <Route path="/profile" element={isLoggedIn ? (<>
+            <Header toggleDarkMode={toggleDarkMode} darkMode={darkMode} toggleSidebar={toggleSidebar} handleLogout={handleLogout} />
+            <Sidebar isSidebarOpen={isSidebarOpen} />
+            <Main isSidebarOpen={isSidebarOpen}>
+              <Content><NewPlatformPage /></Content> </Main></>) : (<LoginPage handleLogin={handleLogin} />)} />
         </Routes>
       </div>
     </Router>

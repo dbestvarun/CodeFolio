@@ -19,9 +19,9 @@ const Header = ({ toggleDarkMode, darkMode, toggleSidebar, handleLogout }) => {
             </button>
             <a href="#" className="flex ms-2 md:me-24">
               <MdSpaceDashboard className="h-8 me-3 text-xl text-green-500" />
-              <span className="self-center text-xl sm:text-2xl whitespace-nowrap dark:text-white font-semibold">
+              <a href="/" className="self-center text-xl sm:text-2xl whitespace-nowrap dark:text-white font-semibold">
                 CodeFolio
-              </span>
+              </a>
             </a>
           </div>
 

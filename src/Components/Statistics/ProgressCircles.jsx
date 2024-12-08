@@ -45,7 +45,7 @@ export function ProgressCircles() {
                     <span className="text-2xl font-bold">34</span>
                   </div>
                 </div>
-                <div>
+                <div className="space-y-2 flex-1">
                   <div className="flex items-center justify-between">
                     <span className="text-sm">GFG</span>
                     <span className="font-medium">34</span>

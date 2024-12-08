@@ -10,7 +10,7 @@ const Sidebar = ({ isSidebarOpen }) => {
                     <ul className='space-y-2 font-medium'>
                         <a href="" className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
                             <IoStatsChartOutline className="mr-3" />
-                            <span className="flex-1 me-3">Statistics</span>
+                            <a href="/leaderboard" className="flex-1 me-3" >Leaderboard</a>
                         </a>
                     </ul>
                     <ul className='space-y-2 font-medium'>
