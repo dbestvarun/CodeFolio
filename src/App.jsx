@@ -13,7 +13,7 @@ import RatingGraph from './Components/Statistics/RatingGraph.jsx';
 import { ProgressCircles } from './Components/Statistics/ProgressCircles.jsx';
 import NewPlatformPage from './Components/Profile/NewPlatformPage.jsx'
 import { TopicAnalysis } from './Components/Statistics/TopicStats.jsx';
-import UniversityRank from './Components/Statistics/UniversityRank.jsx';
+import ContestRating from './Components/Statistics/ContestRating.jsx';
 import Cookies from 'js-cookie';
 import Leaderboard from './Components/Leaderboard/Leaderboard.jsx';
 const App = () => {
@@ -77,7 +77,7 @@ const App = () => {
                       <StatsCards />
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <ActivityHeatmap />
-                        <UniversityRank />
+                        <ContestRating />
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* <RatingGraph /> */}
