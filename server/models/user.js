@@ -21,6 +21,9 @@ const UserSchema = new mongoose.Schema({
   codechef: {
     type: String,
   },
+  geeksforgeeks: {
+    type: String,
+  },
   total_active_days: {
     type: Number,
   },
