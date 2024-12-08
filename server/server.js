@@ -123,7 +123,7 @@ app.get("/api/verify", (req, res) => {
 
 app.post("/api/profile", async (req, res) => {
   console.log(req.body);
-  const { email, codeforces, leetcode, codechef } = req.body;
+  const { email, codeforces, leetcode, codechef, geeksforgeeks } = req.body;
   console.log(email);
   console.log(codechef);
   console.log(codeforces);
@@ -141,6 +141,7 @@ app.post("/api/profile", async (req, res) => {
     if (codeforces !== undefined) user.codeforces = codeforces;
     if (leetcode !== undefined) user.leetcode = leetcode;
     if (codechef !== undefined) user.codechef = codechef;
+    if (geeksforgeeks !== undefined) user.geeksforgeeks = geeksforgeeks;
     user.updatedAt = Date.now();
 
     await user.save();
@@ -179,6 +180,7 @@ app.post("/api/profile/delete", async (req, res) => {
     if (platform === "codeforces") user.codeforces = "";
     if (platform === "codechef") user.codechef = "";
     if (platform === "leetcode") user.leetcode = "";
+    if (platform === "geeksforgeeks") user.geeksforgeeks = "";
     user.updatedAt = Date.now();
 
     await user.save();
@@ -195,9 +197,9 @@ app.post("/api/profile/delete", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-app.get("/api/profile/info", async (req, res) => {
+app.post("/api/profile/info", async (req, res) => {
   const { email } = req.body;
-  console.log(email);
+  console.log(req.body);
 
   if (!email) {
     return res.status(400).json({ message: "Email is required" });
@@ -217,6 +219,7 @@ app.get("/api/profile/info", async (req, res) => {
         codechef: user.codechef,
         codeforces: user.codeforces,
         leetcode: user.leetcode,
+        geeksforgeeks: user.geeksforgeeks,
       },
     });
   } catch (err) {
