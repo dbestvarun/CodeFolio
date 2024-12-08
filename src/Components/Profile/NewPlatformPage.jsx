@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const NewPlatformPage = () => {
     const [usernames, setUsernames] = useState({
@@ -138,7 +138,7 @@ const NewPlatformPage = () => {
                 leetcode: usernames["Leetcode"].value,
                 geeksforgeeks: usernames["GeeksforGeeks"].value,
             });
-
+            const response6 = await axios.post('http://localhost:5000/api/set-user-rank')
             if (response.status === 200) {
                 alert("Profile updated successfully!");
             } else {

@@ -164,7 +164,7 @@ app.post("/api/profile", async (req, res) => {
 });
 app.post("/api/profile/ratings", async (req, res) => {
   console.log(req.body);
-  const { email, codeforces, leetcode,questions } = req.body;
+  const { email, codeforces, leetcode, questions } = req.body;
   console.log(email);
   console.log(codeforces);
   console.log(leetcode);
@@ -259,6 +259,8 @@ app.post("/api/profile/info", async (req, res) => {
         codeforces: user.codeforces,
         leetcode: user.leetcode,
         geeksforgeeks: user.geeksforgeeks,
+        total_questions: user.total_questions,
+        rank: user.rank,
       },
     });
   } catch (err) {
@@ -298,8 +300,7 @@ app.get("/users/questions-desc", async (req, res) => {
 
 app.get("/users/cf", async (req, res) => {
   try {
-    const users = await User.find({})
-      .sort({ cf_rating: 1 })
+    const users = await User.find({}).sort({ cf_rating: 1 });
 
     res.status(200).json({
       message: "Users sorted by total active days fetched successfully",
@@ -313,8 +314,7 @@ app.get("/users/cf", async (req, res) => {
 
 app.get("/users/questions", async (req, res) => {
   try {
-    const users = await User.find({})
-      .sort({ total_questions: 1 })
+    const users = await User.find({}).sort({ total_questions: 1 });
 
     res.status(200).json({
       message: "Users sorted by total questions fetched successfully",
@@ -326,6 +326,37 @@ app.get("/users/questions", async (req, res) => {
   }
 });
 
+app.post("/api/set-user-rank", async (req, res) => {
+  try {
+    let users = await User.find({}).lean();
+    users = users.map((user) => {
+      const cf_rating = user.cf_rating || 0;
+      const total_questions = user.total_questions || 0;
+      const calculatedScore = cf_rating * 2.5 + total_questions * 3.5;
+
+      return {
+        ...user,
+        calculatedScore,
+      };
+    });
+
+    users.sort((a, b) => b.calculatedScore - a.calculatedScore);
+
+    users = users.map((user, index) => ({
+      ...user,
+      rank: index + 1,
+    }));
+
+    for (const user of users) {
+      await User.findByIdAndUpdate(user._id, { rank: user.rank });
+    }
+
+    res.status(200).json({ message: "Ranks updated successfully", users });
+  } catch (err) {
+    console.error("Error setting user ranks:", err);
+    res.status(500).json({ message: "Server error while setting user ranks" });
+  }
+});
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

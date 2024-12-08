@@ -33,6 +33,9 @@ const UserSchema = new mongoose.Schema({
   total_questions: {
     type: Number,
   },
+  rank:{
+    type:Number,
+  }
 });
 
 const User = mongoose.model("User", UserSchema);
