@@ -7,7 +7,10 @@ import Main from './ui/Main.jsx';
 import Content from './ui/Content.jsx';
 import Profile from './Components/Profile/Profile.jsx';
 import VerifyPage from './Components/LogIn/VerifyPage.jsx'; // Import the VerifyPage
-import Calendar from './Components/Statistics/Calendar.jsx';
+import StatsCards from './Components/Statistics/StatsCards.jsx';
+import ActivityHeatmap from './Components/Statistics/ActivityHeatmap.jsx';
+import RatingGraph from './Components/Statistics/RatingGraph.jsx';
+import { ProgressCircles } from './Components/Statistics/ProgressCircles.jsx';
 import NewPlatformPage from './Components/Profile/NewPlatformPage.jsx'
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -45,9 +48,19 @@ const App = () => {
               <Sidebar isSidebarOpen={isSidebarOpen} />
               <Main isSidebarOpen={isSidebarOpen}>
                 <Content>
-                  < Calendar />
+                <div className="flex">
+                    {/* <ProfileSidebar /> */}
+                    <div className="flex-1   p-6 space-y-6">
+                      <StatsCards />
+                      <ActivityHeatmap />
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <RatingGraph />
+                        <ProgressCircles />
+                      </div>
+                    </div>
+                  </div>
                 </Content>
-                <Profile userEmail={userEmail} /> {/* Pass userEmail to Profile if needed */}
+                <Profile  /> {/* Pass userEmail to Profile if needed */}
               </Main>
             </>
           ) : (
