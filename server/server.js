@@ -84,10 +84,8 @@ app.post("/api/signup", async (req, res) => {
   }
 
   try {
-    // Check if the user already exists
     let user = await User.findOne({ email });
     if (!user) {
-      // Create a new user if none exists
       user = await User.create({
         email: email,
         roll_number: rollNumber,
@@ -197,5 +195,35 @@ app.post("/api/profile/delete", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+app.get("/api/profile/info", async (req, res) => {
+  const { email } = req.body;
+  console.log(email);
+
+  if (!email) {
+    return res.status(400).json({ message: "Email is required" });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: {
+        id: user._id,
+        email: user.email,
+        codechef: user.codechef,
+        codeforces: user.codeforces,
+        leetcode: user.leetcode,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
