@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Change Switch to Routes
 import LoginPage from './Components/LogIn/LoginPage.jsx';
 import Header from "./Components/Header/Header.jsx";
@@ -14,6 +14,7 @@ import { ProgressCircles } from './Components/Statistics/ProgressCircles.jsx';
 import NewPlatformPage from './Components/Profile/NewPlatformPage.jsx'
 import { TopicAnalysis } from './Components/Statistics/TopicStats.jsx';
 import UniversityRank from './Components/Statistics/UniversityRank.jsx';
+import Cookies from 'js-cookie';
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -27,7 +28,26 @@ const App = () => {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
+  useEffect(() => {
+    const fetchCokkie = async () => {
+      try {
+        const token = Cookies.get("user");
+        if (!token) {
+          // alert("User is not authenticated.");
+          setIsLoggedIn(false);
+          return;
+        }
+        setIsLoggedIn(true);
 
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      } finally {
+        // setIsLoggedIn(true);
+      }
+    };
+
+    fetchCokkie();
+  }, []);
   const handleLogin = (email) => {
     setIsLoggedIn(true);
     setUserEmail(email);
@@ -50,13 +70,13 @@ const App = () => {
               <Sidebar isSidebarOpen={isSidebarOpen} />
               <Main isSidebarOpen={isSidebarOpen}>
                 <Content>
-                <div className="flex">
+                  <div className="flex">
                     {/* <ProfileSidebar /> */}
                     <div className="flex-1   p-6 space-y-6">
                       <StatsCards />
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <ActivityHeatmap />
-                      <UniversityRank />
+                        <ActivityHeatmap />
+                        <UniversityRank />
                       </div>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {/* <RatingGraph /> */}
@@ -66,15 +86,15 @@ const App = () => {
                     </div>
                   </div>
                 </Content>
-                <Profile  /> {/* Pass userEmail to Profile if needed */}
+                <Profile /> {/* Pass userEmail to Profile if needed */}
               </Main>
             </>
           ) : (
             <LoginPage handleLogin={handleLogin} />
           )} />
           {/* Route for the Verify Page */}
-          <Route path="/verify" element={!isLoggedIn?(<VerifyPage handleLogin={handleLogin} />):(<LoginPage handleLogin={handleLogin} />)} />
-          <Route path="/profile" element={!isLoggedIn?(<NewPlatformPage />):(<LoginPage handleLogin={handleLogin} />)} />
+          <Route path="/verify" element={isLoggedIn ? (<VerifyPage handleLogin={handleLogin} />) : (<LoginPage handleLogin={handleLogin} />)} />
+          <Route path="/profile" element={isLoggedIn ? (<NewPlatformPage />) : (<LoginPage handleLogin={handleLogin} />)} />
         </Routes>
       </div>
     </Router>
