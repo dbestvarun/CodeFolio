@@ -3,9 +3,6 @@ import axios from 'axios';
 import '../../style/LoginPage.css';
 import Cookies from 'js-cookie';
 
-// Set a cookie
-
-// Optionally, you can use additional options like 'secure', 'sameSite', etc.
 
 const LoginPage = ({ handleLogin }) => {
   const [rollNumber, setRollNumber] = useState('');
@@ -17,16 +14,18 @@ const LoginPage = ({ handleLogin }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const email = `${rollNumber}${emailDomain}`; // Construct the full email
-    setLoading(true); // Start loading
+    const email = `${rollNumber}${emailDomain}`; 
+    setLoading(true); 
 
     try {
       const data = await axios.post('http://localhost:5000/api/send-magic-link', { email, rollNumber });
+      const data2 = await axios.post('http://localhost:5000/api/signup', { email, rollNumber });
+      console.log(data2)
       const data1 = (data.data.token)
       Cookies.set('user', data1, { expires: 7, path: '/' });
 
       alert('Check your email for the magic link.');
-      // handleLogin(email);
+      handleLogin(email);
       setError(null);
     } catch (error) {
       console.error('Error sending magic link', error);

@@ -8,11 +8,11 @@ import Content from './ui/Content.jsx';
 import Profile from './Components/Profile/Profile.jsx';
 import VerifyPage from './Components/LogIn/VerifyPage.jsx'; // Import the VerifyPage
 import Calendar from './Components/Statistics/Calendar.jsx';
-
+import NewPlatformPage from './Components/Profile/NewPlatformPage.jsx'
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Authentication state
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Authentication state
   const [userEmail, setUserEmail] = useState(null); // Store the user's email
 
   const toggleDarkMode = () => {
@@ -24,21 +24,20 @@ const App = () => {
   };
 
   const handleLogin = (email) => {
-    setIsLoggedIn(true); 
-    setUserEmail(email); 
+    setIsLoggedIn(true);
+    setUserEmail(email);
     console.log('User logged in:', email);
   };
 
   const handleLogout = () => {
-    setIsLoggedIn(false); 
-    setUserEmail(null); 
+    setIsLoggedIn(false);
+    setUserEmail(null);
   };
 
   return (
     <Router>
       <div className={`${darkMode ? "dark" : ""}`}>
         <Routes>
-          {/* Route for the Login Page */}
           <Route path="/" element={isLoggedIn ? (
             <>
               {/* Render Dashboard when logged in */}
@@ -56,6 +55,7 @@ const App = () => {
           )} />
           {/* Route for the Verify Page */}
           <Route path="/verify" element={<VerifyPage handleLogin={handleLogin} />} />
+          <Route path="/profile" element={<NewPlatformPage />} />
         </Routes>
       </div>
     </Router>

@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import User from "./models/user.js";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
+import  connectMongoDB  from "./helpers/connection.js";
 
 dotenv.config();
 const app = express();
@@ -14,10 +15,9 @@ app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+connectMongoDB(process.env.mongoDbUrl).then(() =>
+  console.log("MongoDB connected successfully!!!!!")
+);
 
 const secretKey = process.env.JWT_SECRET_KEY;
 let users = [];
@@ -48,7 +48,7 @@ app.post("/api/send-magic-link", async (req, res) => {
     expiresIn: "24h",
   });
   console.log(token);
-  const magicLink = `http://localhost:5174/verify?token=${token}`;
+  const magicLink = `http://localhost:5173/verify?token=${token}`;
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -84,16 +84,21 @@ app.post("/api/signup", async (req, res) => {
   }
 
   try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+    // Check if the user already exists
+    let user = await User.findOne({ email });
+    if (!user) {
+      // Create a new user if none exists
+      user = await User.create({
+        email: email,
+        roll_number: rollNumber,
+      });
+      console.log("New user created:", user);
+    } else {
+      console.log("Existing user found:", user);
     }
 
-    const newUser = await User.create({
-      email: email,
-      roll_number: rollNumber,
-    });
-    console.log(newUser);
+    // Respond with the existing or newly created user
+    res.status(200).json({ message: "User retrieved successfully", user });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
