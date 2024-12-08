@@ -29,6 +29,8 @@ export default function StatsCards() {
           const { codechef, codeforces } = response.data.user;
           const response1 = await axios.get(`https://codechef-api.vercel.app/handle/${codechef}`);
           const response2 = await axios.get(`https://codeforces.com/api/user.rating?handle=${codeforces}`);
+          const response4 = await axios.get(`https://codeforces.com/api/user.status?handle=${codeforces}`);
+
           const cf = (response2.data.result.length);
           const cc = response1.data.ratingData.length;
 

@@ -3,14 +3,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { jwtDecode } from "jwt-decode";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function ProgressCircles() {
   const [cpQuestions, setCpQuestions] = useState({
     codechef: 0,
     codeforces: 0,
   });
-  const [dsaQuestions,setDsaQuestions] = useState({
+  const [dsaQuestions, setDsaQuestions] = useState({
     easy: 0,
     medium: 0,
     hard: 0,
@@ -34,13 +34,26 @@ export default function ProgressCircles() {
           const response1 = await axios.get(`https://codechef-api.vercel.app/handle/${codechef}`);
           const response2 = await axios.get(`https://codeforces.com/api/user.info?handles=${codeforces}`);
           const response3 = await axios.get(`https://leetcode-api-faisalshohag.vercel.app/${leetcode}`);
-          
+          const response4 = await axios.get(`https://codeforces.com/api/user.status?handle=${codeforces}`);
+          const response5 = await axios.get(`http://127.0.0.1:7000/${codechef}`);
+          console.log(response5)
+          const cccount = response5.data.total_problems_solved;
+          let cfcount = 0;
+          for (var i = 0; i < response4.data.result.length; i++) {
+            if (response4.data.result[i].verdict === "OK") {
+              cfcount += 1;
+            }
+          }
           setDsaQuestions({
             easy: response3.data.easySolved,
             medium: response3.data.mediumSolved,
             hard: response3.data.hardSolved,
           });
-          
+          setCpQuestions({
+            codechef: cccount,
+            codeforces: cfcount
+          })
+
         } else {
           console.error("Failed to fetch profile data");
         }
@@ -109,7 +122,7 @@ export default function ProgressCircles() {
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-3xl font-bold">{dsaQuestions.easy+dsaQuestions.medium+dsaQuestions.hard}</span>
+                <span className="text-3xl font-bold">{dsaQuestions.easy + dsaQuestions.medium + dsaQuestions.hard}</span>
               </div>
             </div>
             <div className="space-y-2">
