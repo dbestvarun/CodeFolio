@@ -12,10 +12,12 @@ import ActivityHeatmap from './Components/Statistics/ActivityHeatmap.jsx';
 import RatingGraph from './Components/Statistics/RatingGraph.jsx';
 import { ProgressCircles } from './Components/Statistics/ProgressCircles.jsx';
 import NewPlatformPage from './Components/Profile/NewPlatformPage.jsx'
+import { TopicAnalysis } from './Components/Statistics/TopicStats.jsx';
+import UniversityRank from './Components/Statistics/UniversityRank.jsx';
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Authentication state
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // Authentication state
   const [userEmail, setUserEmail] = useState(null); // Store the user's email
 
   const toggleDarkMode = () => {
@@ -52,10 +54,14 @@ const App = () => {
                     {/* <ProfileSidebar /> */}
                     <div className="flex-1   p-6 space-y-6">
                       <StatsCards />
-                      <ActivityHeatmap />
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <RatingGraph />
+                      <ActivityHeatmap />
+                      <UniversityRank />
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* <RatingGraph /> */}
                         <ProgressCircles />
+                        <TopicAnalysis />
                       </div>
                     </div>
                   </div>
