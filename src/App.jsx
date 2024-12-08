@@ -10,12 +10,12 @@ import VerifyPage from './Components/LogIn/VerifyPage.jsx'; // Import the Verify
 import StatsCards from './Components/Statistics/StatsCards.jsx';
 import ActivityHeatmap from './Components/Statistics/ActivityHeatmap.jsx';
 import RatingGraph from './Components/Statistics/RatingGraph.jsx';
-import { ProgressCircles } from './Components/Statistics/ProgressCircles.jsx';
 import NewPlatformPage from './Components/Profile/NewPlatformPage.jsx'
 import { TopicAnalysis } from './Components/Statistics/TopicStats.jsx';
 import ContestRating from './Components/Statistics/ContestRating.jsx';
 import Cookies from 'js-cookie';
 import Leaderboard from './Components/Leaderboard/Leaderboard.jsx';
+import ProgressCircles from './Components/Statistics/ProgressCircles.jsx';
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -98,7 +98,8 @@ const App = () => {
                         src="https://codechef-api.vercel.app/rating/dbestvarun"
                         title="Codechef Rating"
                       ></iframe> */}
-                          <ProgressCircles />
+                      <ProgressCircles />
+                          
                       </div>
                       </div>
                     </div>
