@@ -71,6 +71,7 @@ const App = () => {
               <Sidebar isSidebarOpen={isSidebarOpen} />
               <Main isSidebarOpen={isSidebarOpen}>
                 <Content>
+                  <iframe className='min-w-max min-h-full' src="https://codechef-api.vercel.app/rating/dbestvarun"></iframe>
                   <div className="flex">
                     {/* <ProfileSidebar /> */}
                     <div className="flex-1   p-6 space-y-6">
@@ -95,7 +96,7 @@ const App = () => {
           )} />
           {/* Route for the Verify Page */}
           <Route path="/verify" element={isLoggedIn ? (<VerifyPage handleLogin={handleLogin} />) : (<LoginPage handleLogin={handleLogin} />)} />
-          
+
           <Route path="/leaderboard" element={isLoggedIn ? (<>
             <Header toggleDarkMode={toggleDarkMode} darkMode={darkMode} toggleSidebar={toggleSidebar} handleLogout={handleLogout} />
             <Sidebar isSidebarOpen={isSidebarOpen} />

@@ -162,6 +162,45 @@ app.post("/api/profile", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+app.post("/api/profile/ratings", async (req, res) => {
+  console.log(req.body);
+  const { email, codeforces, leetcode,questions } = req.body;
+  console.log(email);
+  console.log(codeforces);
+  console.log(leetcode);
+  if (!email) {
+    return res.status(400).json({ message: "Email is required" });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (questions !== undefined) user.total_questions = questions;
+    if (leetcode !== undefined) user.lc_rating = leetcode;
+    if (codeforces !== undefined) user.cf_rating = codeforces;
+    user.updatedAt = Date.now();
+
+    await user.save();
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: {
+        id: user._id,
+        email: user.email,
+        codechef: user.codechef,
+        codeforces: user.codeforces,
+        leetcode: user.leetcode,
+        updatedAt: user.updatedAt,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 app.post("/api/profile/delete", async (req, res) => {
   console.log(req.body);
   const { email, platform } = req.body;

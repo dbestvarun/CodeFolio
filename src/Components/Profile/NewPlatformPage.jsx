@@ -72,7 +72,7 @@ const NewPlatformPage = () => {
             } else if (platform === "Codeforces") {
                 response = await axios.get(`https://codeforces.com/api/user.info?handles=${username}`);
             } else if (platform === "Leetcode") {
-                response = await axios.get(`https://leetcode-stats-api.herokuapp.com/${username}`);
+                response = await axios.get(`https://leetcode-api-faisalshohag.vercel.app/${username}`);
             } else if (platform === "GeeksforGeeks") {
                 alert(`Verified Username for ${platform}: ${username}`);
                 setUsernames((prevState) => ({
@@ -106,7 +106,7 @@ const NewPlatformPage = () => {
             const verificationPromises = [
                 axios.get(`https://codechef-api.vercel.app/handle/${usernames["Codechef"].value}`),
                 axios.get(`https://codeforces.com/api/user.info?handles=${usernames["Codeforces"].value}`),
-                axios.get(`https://leetcode-stats-api.herokuapp.com/${usernames["Leetcode"].value}`)
+                axios.get(`https://leetcode-api-faisalshohag.vercel.app/${usernames["Leetcode"].value}`)
             ];
 
             const [response1, response2, response3] = await Promise.allSettled(verificationPromises);

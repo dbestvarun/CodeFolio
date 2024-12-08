@@ -24,7 +24,10 @@ const UserSchema = new mongoose.Schema({
   geeksforgeeks: {
     type: String,
   },
-  total_active_days: {
+  cf_rating: {
+    type: Number,
+  },
+  lc_rating: {
     type: Number,
   },
   total_questions: {

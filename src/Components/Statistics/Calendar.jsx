@@ -43,8 +43,8 @@ function WeekDay({ index }) {
 function Timeline({ range, data, colorFunc }) {
   let days = Math.abs(range[0].diff(range[1], 'days'));
   let cells = Array.from(new Array(days));
-  let weekDays = Array.from(new Array(7));  // Corrected to 7 days in a week
-  let months = Array.from(new Array(Math.floor(days / 7)));  // Adjusted to account for 7 days
+  let weekDays = Array.from(new Array(7));  
+  let months = Array.from(new Array(Math.floor(days / 7)));  
 
   let min = Math.min(0, ...data.map(d => d.value));
   let max = Math.max(...data.map(d => d.value));
