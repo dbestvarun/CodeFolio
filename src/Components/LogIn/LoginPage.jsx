@@ -54,12 +54,7 @@ const LoginPage = ({ handleLogin }) => {
                 onChange={(e) => setRollNumber(e.target.value)} // Update roll number state
                 required
               />
-              <i>Roll Number</i>
-            </div>
-
-            <div className="links">
-              <a href="#">Forgot Password</a>
-              <a href="#">Signup</a>
+              <i>University Roll Number</i>
             </div>
 
             <div className="inputBox">

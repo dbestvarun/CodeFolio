@@ -113,13 +113,17 @@ const NewPlatformPage = () => {
                 return;
             }
             console.log("Authenticated user email:", user.email);
-            platform = platform.toLowerCase();
+            let Lplatform = platform.toLowerCase();
             const response = await axios.post('http://localhost:5000/api/profile/delete', {
                 email: user.email,
-                platform: platform,
+                platform: Lplatform,
             });
-            handleInputChange(platform, "")
+            
             if (response.status === 200) {
+                setUsernames((prevState) => ({
+                    ...prevState,
+                    [platform]: "",
+                }));
                 alert("Profile updated successfully!");
             } else {
                 alert("Failed to update profile.");
