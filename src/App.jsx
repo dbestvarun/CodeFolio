@@ -19,7 +19,7 @@ import Leaderboard from './Components/Leaderboard/Leaderboard.jsx';
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // Authentication state
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Authentication state
   const [userEmail, setUserEmail] = useState(null); // Store the user's email
 
   const toggleDarkMode = () => {
@@ -71,23 +71,40 @@ const App = () => {
               <Sidebar isSidebarOpen={isSidebarOpen} />
               <Main isSidebarOpen={isSidebarOpen}>
                 <Content>
-                  <iframe className='min-w-max min-h-full' src="https://codechef-api.vercel.app/rating/dbestvarun"></iframe>
-                  <div className="flex">
-                    {/* <ProfileSidebar /> */}
-                    <div className="flex-1   p-6 space-y-6">
-                      <StatsCards />
+                  <div className="flex flex-wrap">
+                    <div className="flex-auto p-6 space-y-6 w-full md:w-3/4">
+                      {/* Stats Cards */}
+                        <StatsCards />
+                      
+
+                      {/* Heatmap */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <ActivityHeatmap />
-                        <ContestRating />
+                      <ActivityHeatmap />
+
+                      {/* Embedded Rating Iframe */}
+                      <ContestRating />
                       </div>
+
+                      {/* Topic Analysis and Contest Rating */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        {/* <RatingGraph /> */}
-                        <ProgressCircles />
+                      <div>
+
                         <TopicAnalysis />
+                      </div>
+                        <div className='grid grid-row-1 min-w-96 gap-6'>
+                          <RatingGraph />
+                      {/* <iframe
+                        className="w-full h-96 dark:bg-black dark:text-white rounded-lg border border-gray-200"
+                        src="https://codechef-api.vercel.app/rating/dbestvarun"
+                        title="Codechef Rating"
+                      ></iframe> */}
+                          <ProgressCircles />
+                      </div>
                       </div>
                     </div>
                   </div>
                 </Content>
+
                 <Profile /> {/* Pass userEmail to Profile if needed */}
               </Main>
             </>

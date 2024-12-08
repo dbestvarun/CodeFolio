@@ -82,14 +82,14 @@ export default function ContestRating() {
               </TabsTrigger>
             ))}
           </TabsList>
-          {Object.keys(ratings).map((platform) => (
+          {/* {Object.keys(ratings).map((platform) => (
             <TabsContent key={platform} value={platform} className="mt-4">
               <div className="flex justify-between items-center">
                 <span className="text-muted-foreground">{platform.charAt(0).toUpperCase() + platform.slice(1)}</span>
                 <span className="font-semibold">{ratings[platform]}</span>
               </div>
             </TabsContent>
-          ))}
+          ))} */}
         </Tabs>
       </CardContent>
     </Card>
