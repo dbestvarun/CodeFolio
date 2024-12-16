@@ -78,15 +78,12 @@ const App = () => {
                       
 
                       {/* Heatmap */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
                       <ActivityHeatmap />
 
                       {/* Embedded Rating Iframe */}
                       <ContestRating />
-                      </div>
-
-                      {/* Topic Analysis and Contest Rating */}
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      
                       <div>
 
                         <TopicAnalysis />

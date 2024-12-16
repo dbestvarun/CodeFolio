@@ -55,7 +55,7 @@ export default function ActivityHeatmap() {
   }
 
   return (
-    <Card>
+    <Card className="min-w-fit">
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">963 submissions in past 6 months</CardTitle>
         <div className="flex items-center space-x-4">

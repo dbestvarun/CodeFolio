@@ -7,13 +7,13 @@ import { useState, useEffect } from "react";
 
 export default function ProgressCircles() {
   const [cpQuestions, setCpQuestions] = useState({
-    codechef: 0,
-    codeforces: 0,
+    codechef: 169,
+    codeforces: 314,
   });
   const [dsaQuestions, setDsaQuestions] = useState({
-    easy: 0,
-    medium: 0,
-    hard: 0,
+    easy: 123,
+    medium:106,
+    hard: 23,
   });
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -64,6 +64,8 @@ export default function ProgressCircles() {
 
     fetchUserProfile();
   }, []);
+  let totalDsa = dsaQuestions.easy+dsaQuestions.medium+dsaQuestions.hard;
+  let totalCp = cpQuestions.codechef + cpQuestions.codeforces;
   return (
     <Card className="w-auto bg-background text-foreground">
       <CardHeader>
@@ -93,8 +95,8 @@ export default function ProgressCircles() {
                   fill="none"
                   strokeLinecap="round"
                   transform="rotate(-90 50 50)"
-                  strokeDasharray="283"
-                  strokeDashoffset="141.5"
+                  strokeDasharray={`${(dsaQuestions.easy/totalDsa)*283} ${((totalDsa-dsaQuestions.easy)/totalDsa)*283}`}
+                  strokeDashoffset={0}
                 />
                 <circle
                   className="stroke-yellow-500"
@@ -104,9 +106,9 @@ export default function ProgressCircles() {
                   strokeWidth="10"
                   fill="none"
                   strokeLinecap="round"
-                  transform="rotate(0 50 50)"
-                  strokeDasharray="283"
-                  strokeDashoffset="212.25"
+                  transform="rotate(-90 50 50)"
+                  strokeDasharray={`${(dsaQuestions.medium/totalDsa)*283} ${((totalDsa-dsaQuestions.medium)/totalDsa)*283}`}
+                  strokeDashoffset={dsaQuestions.easy/totalDsa*-283}
                 />
                 <circle
                   className="stroke-red-500"
@@ -116,9 +118,9 @@ export default function ProgressCircles() {
                   strokeWidth="10"
                   fill="none"
                   strokeLinecap="round"
-                  transform="rotate(90 50 50)"
-                  strokeDasharray="283"
-                  strokeDashoffset="247.625"
+                  transform="rotate(-90 50 50)"
+                  strokeDasharray={`${(dsaQuestions.hard/totalDsa)*283} ${((totalDsa-dsaQuestions.hard)/totalDsa)*283}`}
+                  strokeDashoffset={(totalDsa-dsaQuestions.hard)/totalDsa*-283}
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
@@ -141,7 +143,7 @@ export default function ProgressCircles() {
             </div>
           </div>
         </div>
-
+        
         {/* Competitive Programming Section */}
         <div className="space-y-4">
           <h3 className="text-primary">Competitive Programming</h3>
@@ -164,9 +166,9 @@ export default function ProgressCircles() {
                   strokeWidth="10"
                   fill="none"
                   strokeLinecap="round"
-                  transform="rotate(-90 50 50)"
-                  strokeDasharray="283"
-                  strokeDashoffset="141.5"
+                  transform="rotate(90 50 50)"
+                  strokeDasharray={`${(cpQuestions.codechef/totalCp)*283} ${(cpQuestions.codeforces/totalCp)*283}`}
+                  strokeDashoffset={0}
                 />
                 <circle
                   className="stroke-yellow-500"
@@ -177,22 +179,22 @@ export default function ProgressCircles() {
                   fill="none"
                   strokeLinecap="round"
                   transform="rotate(90 50 50)"
-                  strokeDasharray="283"
-                  strokeDashoffset="141.5"
+                  strokeDasharray={`${(cpQuestions.codeforces/totalCp)*283} ${(cpQuestions.codechef/totalCp)*283}`}
+                  strokeDashoffset={(cpQuestions.codechef/totalCp)*-283}
                 />
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-3xl font-bold">491</span>
+                <span className="text-3xl font-bold">{cpQuestions.codechef+cpQuestions.codeforces}</span>
               </div>
             </div>
             <div className=" space-y-2">
               <div className="flex gap-4 items-center justify-between rounded-md bg-muted px-3 py-2">
                 <span className="text-green-500">Codechef</span>
-                <span className="text-muted-foreground">167</span>
+                <span className="text-muted-foreground">{cpQuestions.codechef}</span>
               </div>
               <div className="flex gap-4 items-center justify-between rounded-md bg-muted px-3 py-2">
                 <span className="text-yellow-500">Codeforces</span>
-                <span className="text-muted-foreground">324</span>
+                <span className="text-muted-foreground">{cpQuestions.codeforces}</span>
               </div>
             </div>
           </div>
